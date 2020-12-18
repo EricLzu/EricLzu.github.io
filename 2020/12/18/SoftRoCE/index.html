@@ -1,0 +1,482 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="EricLzu's Blog" href="http://ericlzu.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="EricLzu's Blog" href="http://ericlzu.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="EricLzu's Blog" href="http://ericlzu.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="http://ericlzu.github.io/2020/12/18/SoftRoCE/">
+
+
+
+  <title>
+ |
+天道酬勤 = EricLzu's Blog</title>
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="创建时间：2020-12-18 14:45:12">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="dateCreated datePublished" datetime="2020-12-18T14:45:12+08:00">2020-12-18</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">天道酬勤</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipewf5l51j20zk0m8b29.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giciryrr3rj20zk0m8nhk.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giph4baakhj20zk0m8h5q.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipeuv80yoj20zk0m8kjl.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1giclimtf7dj20zk0m8qav.jpg"></li>
+          <li class="item" data-background-image="https://tva4.sinaimg.cn/large/6833939bly1gipey84bjtj20zk0m8hdt.jpg"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首页</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+  <link itemprop="mainEntityOfPage" href="http://ericlzu.github.io/2020/12/18/SoftRoCE/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/avatar.jpg">
+    <meta itemprop="name" content="EricLzu">
+    <meta itemprop="description" content=", Eric的博客">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="EricLzu's Blog">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="简介"><a class="markdownIt-Anchor" href="#简介">#</a> 简介</h1>
+<p>SoftRoCE 是 RDMA 的一种纯软件实现的方式，因此不需要特定的硬件支持，但是其性能与硬件支持的 RDMA 还是有一些差距的。通过 softRoCE 我们可以在传统的以太网进行 RoCE 通信。自 4.9.0 之后的内核已经内置 sofrRoCE 驱动，我们直接使用即可。</p>
+<h1 id="环境搭建"><a class="markdownIt-Anchor" href="#环境搭建">#</a> 环境搭建</h1>
+<ol>
+<li>实验环境</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Server</th>
+<th>Client</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ubuntu 18.04</td>
+<td>ubuntu 18.04</td>
+</tr>
+<tr>
+<td>kernel 5.4.0</td>
+<td>kernel 5.4.0</td>
+</tr>
+<tr>
+<td>x86</td>
+<td>x86</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>安装相关软件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libibverbs-dev librdmacm-dev rdma-core</span><br><span class="line"><span class="meta">#</span><span class="bash">备注</span></span><br><span class="line"> - libibverbs-dev - Development files for the libibverbs library</span><br><span class="line"> - librdmacm-dev - Development files for the librdmacm library</span><br><span class="line"> - rdma-core - RDMA core userspace infrastructure and documentation</span><br></pre></td></tr></table></figure>
+<h1 id="联通测试"><a class="markdownIt-Anchor" href="#联通测试">#</a> 联通测试</h1>
+<p>1. 在 server 端和 client 端创建 RoCE interface：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rxe_cfg start</span><br><span class="line">sudo rxe_cfg add enp3s0</span><br></pre></td></tr></table></figure>
+<pre><code>	成功后出现：
+</code></pre>
+<p><img data-src="https://img-blog.csdnimg.cn/20201214105731686.png" alt="在这里插入图片描述"> 2. 测试前准备<br>
+查看 rdma 设备：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ibv_devices</span><br><span class="line">ibv_devinfo</span><br></pre></td></tr></table></figure>
+<p>3. 开始测试<br>
+采用 rping 命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#server:</span></span><br><span class="line">	rping -s -a [server-ip] -v -C 10</span><br><span class="line"><span class="comment">#client:</span></span><br><span class="line">	rping -c -a [server-ip] -v -C 10</span><br></pre></td></tr></table></figure>
+<p>测试结果（server）：<br>
+<img data-src="https://img-blog.csdnimg.cn/20201214154817983.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hzeF82MzYx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>采用 ibv_rc_pingpong 命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#server：</span></span><br><span class="line">	ibv_rc_pingpong -g 2 -d rxe0</span><br><span class="line"><span class="comment">#client:</span></span><br><span class="line">	ibv_rc_pingpong -g 2 -d rxe1 [server-ip]</span><br></pre></td></tr></table></figure>
+<p>测试结果（server）：<br>
+<img data-src="https://img-blog.csdnimg.cn/20201214154609768.png" alt="在这里插入图片描述"><br>
+<strong>备注</strong>：<br>
+-g 是设置网口的 GID 值，其要正确设置，否则会出现不能通信的问题。这里的设置正确是指客户端和服务端的 GID 的类型要统一，比如：<br>
+两者要么都是：GID fe80::6977:7a66:fa55:5334 这种格式，要么都是：GID ::ffff:192.168.50.59 这种格式，在不同的电脑上设置 - g 1 或者 -g 2 出现的格式可能会不一样，所以我们需要通过灵活设置 GID 的值使二者的格式相同。<br>
+-d 是设置具体的 RDMA 设备，该值可由 sudo rxe_cfg status 得出：<br>
+<img data-src="https://img-blog.csdnimg.cn/20201214153503673.png" alt="RDMA设备"></p>
+<p>由上图可见，RDMA 设备值为 rxe0</p>
+<p><strong>对 GID 的解释：</strong><br>
+每当以太网设备的一个网络端口配置了一个 IP 地址时，就会在 GID 表格中创建一个表项。每个表项包含：GID 值，GID 类型，网络设备。对于两种模式都支持的设备端口，表中会存在两个 GID，有相同的值，但是类型不同。表项中的网络设备是该 GID 关联的以太网设备的 IP 地址。</p>
+<p>GID 格式有可以有两种：IPv4 和 IPv6。IPv4 版本的 GID 是一个 IPv4 映射的 IPv6 地址，而 IPv6 版本的 GID 是 IPv6 地址本身。对于 RoCEv2，关联到 IPv4 版本 GID 的三层网络包，其头三层头部是 IPv4，IPv6 亦然。对于 RoCEv1，关联到 IPv6 或 IPv4 版本 GID 的网络包，头部是 IPv6 或者 GRH。</p>
+<p>GID 表格项的总数等于 N (K+1)， N 是赋予给所有网络设备上关联端口的 IP 地址数量，包括 VLAN 设备，别名设备，和 bonding master。链路本地的 IPv6 地址被排除在这个计数之外，因为它们的 GID 总是存在的，是默认的 GID，处于每个 GID 表格的开始。K 是支持的 RoCE 类型数量。每个硬件端口的表格项数量限制在 128。show_gids 命令可以查看系统中的 GID 表。</p>
+<p>在系统文件 sysfs 中查看 GID 的路径是：</p>
+<p>GID 值：/sys/class/infinband/<device>/ports/<port>/gids/<index><br>
+GID 类型：/sys/class/infinband/<device>/ports/<port>/gid_attrs/types/<index><br>
+GID 网络设备：/sys/class/infinband/<device>/ports/<port>/gid_attrs/ndevs/<index><br>
+<span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vYnVybmluZ1RoZVN0YXIvYXJjaGl2ZS8yMDA0LzAxLzEzLzg1NjU2MTIuaHRtbA==">参考来源</span></p>
+<h1 id="softroce带宽测试"><a class="markdownIt-Anchor" href="#softroce带宽测试">#</a> SoftRoCE 带宽测试</h1>
+<ol>
+<li>安装测试软件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install perftest</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>开始测试</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">server：</span><br><span class="line">	ib_send_bw -n 10000 -d rxe0 -i 1 -F --report_gbits</span><br><span class="line">client:</span><br><span class="line">	ib_send_bw -n 10000 -d rxe0 -i 1 -F --report_gbits [server-ip]</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>测试结果（server 端）:<br>
+<img data-src="https://img-blog.csdnimg.cn/20201214111146673.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hzeF82MzYx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ol>
+<h1 id="传统以太网带宽测试"><a class="markdownIt-Anchor" href="#传统以太网带宽测试">#</a> 传统以太网带宽测试</h1>
+<h2 id="1-iperf"><a class="markdownIt-Anchor" href="#1-iperf">#</a> 1. iperf</h2>
+<p>参考：<span class="exturl" data-url="aHR0cHM6Ly9tYW4ubGludXhkZS5uZXQvaXBlcmY=">iperf 使用指南</span></p>
+<ol>
+<li>安装测试软件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install iperf</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>开始测试</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">server：</span><br><span class="line">	iperf -s -i 1 -f m</span><br><span class="line">client:</span><br><span class="line">	iperf -c [server-ip] -i 1 -t 30 -f m </span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>测试结果（server）<br>
+<img data-src="https://img-blog.csdnimg.cn/2020121411165986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hzeF82MzYx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ol>
+<h2 id="2-qperf"><a class="markdownIt-Anchor" href="#2-qperf">#</a> 2. qperf</h2>
+<ol>
+<li>安装</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install qperf</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>使用</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#server</span></span><br><span class="line">qperf</span><br><span class="line"><span class="comment">#client</span></span><br><span class="line">	<span class="comment">#直接测试TCP的带宽和延迟</span></span><br><span class="line">	qperf [server-ip] tcp_bw tcp_lat conf</span><br><span class="line">	<span class="comment">#改变消息大小，从1Byte到64K，每次倍增的方式，通过测试查看带宽和延迟的变化情况</span></span><br><span class="line">	qperf myserver -oo msg_size:1:64K:*2 -vu tcp_lat tcp_bw</span><br></pre></td></tr></table></figure>
+<h1 id="rdma卡检测方法"><a class="markdownIt-Anchor" href="#rdma卡检测方法">#</a> <span class="exturl" data-url="aHR0cHM6Ly93d3cuY25ibG9ncy5jb20va2Fpc2hpcmVuc2hpL3AvMTAyODYzMDcuaHRtbA==">RDMA 卡检测方法</span></h1>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+</div>
+
+      
+<div class="reward">
+  <button><i class="ic i-heartbeat"></i> 赞赏</button>
+  <p>请我喝[茶]~(￣▽￣)~*</p>
+  <div id="qr">
+      
+      <div>
+        <img data-src="/images/wechatpay.png" alt="EricLzu 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/alipay.png" alt="EricLzu 支付宝">
+        <p>支付宝</p>
+      </div>
+      
+      <div>
+        <img data-src="/images/paypal.png" alt="EricLzu 贝宝">
+        <p>贝宝</p>
+      </div>
+  </div>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>本文作者： </strong>EricLzu <i class="ic i-at"><em>@</em></i>EricLzu's Blog
+  </li>
+  <li class="link">
+    <strong>本文链接：</strong>
+    <a href="http://ericlzu.github.io/2020/12/18/SoftRoCE/" title="">http://ericlzu.github.io/2020/12/18/SoftRoCE/</a>
+  </li>
+  <li class="license">
+    <strong>版权声明： </strong>本站所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2020/12/18/hello-world/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;tva4.sinaimg.cn&#x2F;mw690&#x2F;6833939bly1giclwrdwyaj20zk0m8are.jpg" title="Hello World">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Hello World</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text"> 简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">2.</span> <span class="toc-text"> 环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%81%94%E9%80%9A%E6%B5%8B%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text"> 联通测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#softroce%E5%B8%A6%E5%AE%BD%E6%B5%8B%E8%AF%95"><span class="toc-number">4.</span> <span class="toc-text"> SoftRoCE 带宽测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E4%BB%A5%E5%A4%AA%E7%BD%91%E5%B8%A6%E5%AE%BD%E6%B5%8B%E8%AF%95"><span class="toc-number">5.</span> <span class="toc-text"> 传统以太网带宽测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-iperf"><span class="toc-number">5.1.</span> <span class="toc-text"> 1. iperf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-qperf"><span class="toc-number">5.2.</span> <span class="toc-text"> 2. qperf</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#rdma%E5%8D%A1%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text"> RDMA 卡检测方法</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="站点概览">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="EricLzu"
+      data-src="/images/avatar.jpg">
+  <p class="name" itemprop="name">EricLzu</p>
+  <div class="description" itemprop="description">Eric的博客</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">2</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+      <span class="exturl item github" data-url="aHR0cHM6Ly9naXRodWIuY29tL0VyaWNMenU=" title="https:&#x2F;&#x2F;github.com&#x2F;EricLzu"><i class="ic i-github"></i></span>
+      <span class="exturl item twitter" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS95b3VybmFtZQ==" title="https:&#x2F;&#x2F;twitter.com&#x2F;yourname"><i class="ic i-twitter"></i></span>
+      <span class="exturl item zhihu" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3Blb3BsZS95b3VybmFtZQ==" title="https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;yourname"><i class="ic i-zhihu"></i></span>
+      <span class="exturl item music" data-url="aHR0cHM6Ly9tdXNpYy4xNjMuY29tLyMvdXNlci9ob21lP2lkPXlvdXJpZA==" title="https:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;user&#x2F;home?id&#x3D;yourid"><i class="ic i-cloud-music"></i></span>
+      <span class="exturl item weibo" data-url="aHR0cHM6Ly93ZWliby5jb20veW91cm5hbWU=" title="https:&#x2F;&#x2F;weibo.com&#x2F;yourname"><i class="ic i-weibo"></i></span>
+      <span class="exturl item about" data-url="aHR0cHM6Ly9hYm91dC5tZS95b3VybmFtZQ==" title="https:&#x2F;&#x2F;about.me&#x2F;yourname"><i class="ic i-address-card"></i></span>
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首页</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>随机文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2020/12/18/hello-world/" title="Hello World">Hello World</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2020/12/18/SoftRoCE/" title="未命名">未命名</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新评论</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2020</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">EricLzu @ 天道酬勤</span>
+  </div>
+  <div class="powered-by">
+    基于 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2020/12/18/SoftRoCE/',
+    favicon: {
+      show: "（●´3｀●）やれやれだぜ",
+      hide: "(´Д｀)大変だ！"
+    },
+    search : {
+      placeholder: "文章搜索",
+      empty: "关于 「 ${query} 」，什么也没搜到",
+      stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    valine: true,fancybox: true,copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+</body>
+</html>

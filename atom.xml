@@ -3,7 +3,116 @@
     <id>http://ericlzu.github.io</id>
     <title>EricLzu&#39;s Blog</title>
     <link href="http://ericlzu.github.io" />
-    <updated>2020-12-18T01:30:42.475Z</updated>
+    <updated>2020-12-18T06:45:12.878Z</updated>
+    <entry>
+        <id>http://ericlzu.github.io/2020/12/18/SoftRoCE/</id>
+        <title></title>
+        <link rel="alternate" href="http://ericlzu.github.io/2020/12/18/SoftRoCE/"/>
+        <content type="html">&lt;h1 id=&#34;简介&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#简介&#34;&gt;#&lt;/a&gt; 简介&lt;/h1&gt;
+&lt;p&gt;SoftRoCE 是 RDMA 的一种纯软件实现的方式，因此不需要特定的硬件支持，但是其性能与硬件支持的 RDMA 还是有一些差距的。通过 softRoCE 我们可以在传统的以太网进行 RoCE 通信。自 4.9.0 之后的内核已经内置 sofrRoCE 驱动，我们直接使用即可。&lt;/p&gt;
+&lt;h1 id=&#34;环境搭建&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#环境搭建&#34;&gt;#&lt;/a&gt; 环境搭建&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;实验环境&lt;/li&gt;
+&lt;/ol&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Server&lt;/th&gt;
+&lt;th&gt;Client&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ubuntu 18.04&lt;/td&gt;
+&lt;td&gt;ubuntu 18.04&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;kernel 5.4.0&lt;/td&gt;
+&lt;td&gt;kernel 5.4.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;x86&lt;/td&gt;
+&lt;td&gt;x86&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;安装相关软件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight shell&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;sudo apt-get install libibverbs-dev librdmacm-dev rdma-core&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;bash&#34;&gt;备注&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; - libibverbs-dev - Development files for the libibverbs library&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; - librdmacm-dev - Development files for the librdmacm library&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt; - rdma-core - RDMA core userspace infrastructure and documentation&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&#34;联通测试&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#联通测试&#34;&gt;#&lt;/a&gt; 联通测试&lt;/h1&gt;
+&lt;p&gt;1. 在 server 端和 client 端创建 RoCE interface：&lt;/p&gt;
+&lt;figure class=&#34;highlight shell&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;sudo rxe_cfg start&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;sudo rxe_cfg add enp3s0&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;pre&gt;&lt;code&gt;	成功后出现：
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://img-blog.csdnimg.cn/20201214105731686.png&#34; alt=&#34;在这里插入图片描述&#34;&gt; 2. 测试前准备&lt;br&gt;
+查看 rdma 设备：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;ibv_devices&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;ibv_devinfo&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;3. 开始测试&lt;br&gt;
+采用 rping 命令&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;#server:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	rping -s -a [server-ip] -v -C 10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;#client:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	rping -c -a [server-ip] -v -C 10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;测试结果（server）：&lt;br&gt;
+&lt;img data-src=&#34;https://img-blog.csdnimg.cn/20201214154817983.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hzeF82MzYx,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;采用 ibv_rc_pingpong 命令&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;#server：&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	ibv_rc_pingpong -g 2 -d rxe0&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;#client:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	ibv_rc_pingpong -g 2 -d rxe1 [server-ip]&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;测试结果（server）：&lt;br&gt;
+&lt;img data-src=&#34;https://img-blog.csdnimg.cn/20201214154609768.png&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;br&gt;
+&lt;strong&gt;备注&lt;/strong&gt;：&lt;br&gt;
+-g 是设置网口的 GID 值，其要正确设置，否则会出现不能通信的问题。这里的设置正确是指客户端和服务端的 GID 的类型要统一，比如：&lt;br&gt;
+两者要么都是：GID fe80::6977:7a66:fa55:5334 这种格式，要么都是：GID ::ffff:192.168.50.59 这种格式，在不同的电脑上设置 - g 1 或者 -g 2 出现的格式可能会不一样，所以我们需要通过灵活设置 GID 的值使二者的格式相同。&lt;br&gt;
+-d 是设置具体的 RDMA 设备，该值可由 sudo rxe_cfg status 得出：&lt;br&gt;
+&lt;img data-src=&#34;https://img-blog.csdnimg.cn/20201214153503673.png&#34; alt=&#34;RDMA设备&#34;&gt;&lt;/p&gt;
+&lt;p&gt;由上图可见，RDMA 设备值为 rxe0&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;对 GID 的解释：&lt;/strong&gt;&lt;br&gt;
+每当以太网设备的一个网络端口配置了一个 IP 地址时，就会在 GID 表格中创建一个表项。每个表项包含：GID 值，GID 类型，网络设备。对于两种模式都支持的设备端口，表中会存在两个 GID，有相同的值，但是类型不同。表项中的网络设备是该 GID 关联的以太网设备的 IP 地址。&lt;/p&gt;
+&lt;p&gt;GID 格式有可以有两种：IPv4 和 IPv6。IPv4 版本的 GID 是一个 IPv4 映射的 IPv6 地址，而 IPv6 版本的 GID 是 IPv6 地址本身。对于 RoCEv2，关联到 IPv4 版本 GID 的三层网络包，其头三层头部是 IPv4，IPv6 亦然。对于 RoCEv1，关联到 IPv6 或 IPv4 版本 GID 的网络包，头部是 IPv6 或者 GRH。&lt;/p&gt;
+&lt;p&gt;GID 表格项的总数等于 N (K+1)， N 是赋予给所有网络设备上关联端口的 IP 地址数量，包括 VLAN 设备，别名设备，和 bonding master。链路本地的 IPv6 地址被排除在这个计数之外，因为它们的 GID 总是存在的，是默认的 GID，处于每个 GID 表格的开始。K 是支持的 RoCE 类型数量。每个硬件端口的表格项数量限制在 128。show_gids 命令可以查看系统中的 GID 表。&lt;/p&gt;
+&lt;p&gt;在系统文件 sysfs 中查看 GID 的路径是：&lt;/p&gt;
+&lt;p&gt;GID 值：/sys/class/infinband/&lt;device&gt;/ports/&lt;port&gt;/gids/&lt;index&gt;&lt;br&gt;
+GID 类型：/sys/class/infinband/&lt;device&gt;/ports/&lt;port&gt;/gid_attrs/types/&lt;index&gt;&lt;br&gt;
+GID 网络设备：/sys/class/infinband/&lt;device&gt;/ports/&lt;port&gt;/gid_attrs/ndevs/&lt;index&gt;&lt;br&gt;
+&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vYnVybmluZ1RoZVN0YXIvYXJjaGl2ZS8yMDA0LzAxLzEzLzg1NjU2MTIuaHRtbA==&#34;&gt;参考来源&lt;/span&gt;&lt;/p&gt;
+&lt;h1 id=&#34;softroce带宽测试&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#softroce带宽测试&#34;&gt;#&lt;/a&gt; SoftRoCE 带宽测试&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;安装测试软件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;sudo apt-get install perftest&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;开始测试&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;server：&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	ib_send_bw -n 10000 -d rxe0 -i 1 -F --report_gbits&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;client:&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	ib_send_bw -n 10000 -d rxe0 -i 1 -F --report_gbits [server-ip]&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;测试结果（server 端）:&lt;br&gt;
+&lt;img data-src=&#34;https://img-blog.csdnimg.cn/20201214111146673.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hzeF82MzYx,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;传统以太网带宽测试&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#传统以太网带宽测试&#34;&gt;#&lt;/a&gt; 传统以太网带宽测试&lt;/h1&gt;
+&lt;h2 id=&#34;1-iperf&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#1-iperf&#34;&gt;#&lt;/a&gt; 1. iperf&lt;/h2&gt;
+&lt;p&gt;参考：&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9tYW4ubGludXhkZS5uZXQvaXBlcmY=&#34;&gt;iperf 使用指南&lt;/span&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;安装测试软件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;sudo apt-get install iperf&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;开始测试&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;server：&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	iperf -s -i 1 -f m&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;client:&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	iperf -c [server-ip] -i 1 -t 30 -f m &lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;测试结果（server）&lt;br&gt;
+&lt;img data-src=&#34;https://img-blog.csdnimg.cn/2020121411165986.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hzeF82MzYx,size_16,color_FFFFFF,t_70&#34; alt=&#34;在这里插入图片描述&#34;&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;2-qperf&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#2-qperf&#34;&gt;#&lt;/a&gt; 2. qperf&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;安装&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;sudo apt-get install qperf&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;使用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;#server&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;qperf&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;#client&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&lt;span class=&#34;comment&#34;&gt;#直接测试TCP的带宽和延迟&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	qperf [server-ip] tcp_bw tcp_lat conf&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&lt;span class=&#34;comment&#34;&gt;#改变消息大小，从1Byte到64K，每次倍增的方式，通过测试查看带宽和延迟的变化情况&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	qperf myserver -oo msg_size:1:64K:*2 -vu tcp_lat tcp_bw&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&#34;rdma卡检测方法&#34;&gt;&lt;a class=&#34;markdownIt-Anchor&#34; href=&#34;#rdma卡检测方法&#34;&gt;#&lt;/a&gt; &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuY25ibG9ncy5jb20va2Fpc2hpcmVuc2hpL3AvMTAyODYzMDcuaHRtbA==&#34;&gt;RDMA 卡检测方法&lt;/span&gt;&lt;/h1&gt;
+</content>
+        <updated>2020-12-18T06:45:12.878Z</updated>
+    </entry>
     <entry>
         <id>http://ericlzu.github.io/2020/12/18/hello-world/</id>
         <title>Hello World</title>
